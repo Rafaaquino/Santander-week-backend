@@ -45,7 +45,7 @@ public class StockController {
 				
 	}
 	
-	@GetMapping(value = "/{id}")
+	@GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<StockDTO> findAllById(@PathVariable Long id) {
 		List<StockDTO> list = new ArrayList<>();
 		StockDTO stock1 = new StockDTO();
@@ -57,7 +57,7 @@ public class StockController {
 		list.add(stock1);
 		
 		StockDTO stock2 = new StockDTO();
-		stock2.setId(1L);
+		stock2.setId(2L);
 		stock2.setName("Cardano");
 		stock2.setPrice((double) 100);
 		stock2.setVariation((double) 10);
