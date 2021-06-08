@@ -8,6 +8,7 @@ import java.util.List;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -42,6 +43,29 @@ public class StockController {
 		list.add(dto);
 		return ResponseEntity.ok(list);
 				
+	}
+	
+	@GetMapping(value = "/{id}")
+	public ResponseEntity<StockDTO> findAllById(@PathVariable Long id) {
+		List<StockDTO> list = new ArrayList<>();
+		StockDTO stock1 = new StockDTO();
+		stock1.setId(1L);
+		stock1.setName("Ethereum");
+		stock1.setPrice((double) 12000);
+		stock1.setVariation((double) 7);
+		stock1.setDate(LocalDate.now());
+		list.add(stock1);
+		
+		StockDTO stock2 = new StockDTO();
+		stock2.setId(1L);
+		stock2.setName("Cardano");
+		stock2.setPrice((double) 100);
+		stock2.setVariation((double) 10);
+		stock2.setDate(LocalDate.now());
+		list.add(stock2);
+		
+		StockDTO dtoSelected = list.stream().filter(x -> x.getId().compareTo(id)== 0 ).findFirst().get();
+		return ResponseEntity.ok(dtoSelected);
 	}
 
 }
