@@ -1,8 +1,6 @@
 package com.project.bootcamp.controller;
 
 
-import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -10,6 +8,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -40,39 +39,18 @@ public class StockController {
 	
 	@GetMapping(produces = MediaType.APPLICATION_JSON_VALUE)
 	public ResponseEntity<List<StockDTO>> findAll() {
-		List<StockDTO> list = new ArrayList<>();
-		StockDTO dto = new StockDTO();
-		dto.setId(1L);
-		dto.setName("Ethereum");
-		dto.setPrice((double) 12000);
-		dto.setVariation((double) 7);
-		dto.setDate(LocalDate.now());
-		list.add(dto);
-		return ResponseEntity.ok(list);
+		return ResponseEntity.ok(service.findAll());
 				
 	}
 	
 	@GetMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
-	public ResponseEntity<StockDTO> findAllById(@PathVariable Long id) {
-		List<StockDTO> list = new ArrayList<>();
-		StockDTO stock1 = new StockDTO();
-		stock1.setId(1L);
-		stock1.setName("Ethereum");
-		stock1.setPrice((double) 12000);
-		stock1.setVariation((double) 7);
-		stock1.setDate(LocalDate.now());
-		list.add(stock1);
-		
-		StockDTO stock2 = new StockDTO();
-		stock2.setId(2L);
-		stock2.setName("Cardano");
-		stock2.setPrice((double) 100);
-		stock2.setVariation((double) 10);
-		stock2.setDate(LocalDate.now());
-		list.add(stock2);
-		
-		StockDTO dtoSelected = list.stream().filter(x -> x.getId().compareTo(id)== 0 ).findFirst().get();
-		return ResponseEntity.ok(dtoSelected);
+	public ResponseEntity<StockDTO> findById(@PathVariable Long id) {
+		return ResponseEntity.ok(service.findById(id));
+	}
+	
+	@DeleteMapping(value = "/{id}", produces = MediaType.APPLICATION_JSON_VALUE)
+	public ResponseEntity<StockDTO> delete(@PathVariable Long id) {
+		return ResponseEntity.ok(service.delete(id));
 	}
 
 }

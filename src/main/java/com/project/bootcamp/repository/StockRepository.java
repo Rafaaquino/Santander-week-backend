@@ -18,4 +18,6 @@ public interface StockRepository extends JpaRepository<Stock, Long> {
 			"FROM Stock stock " +
 			"WHERE stock.name = :name AND stock.date = :date AND stock.id <> :id ")
 	Optional<Stock> findByStockUpdate(String name, LocalDate date, Long id);
+	
+	Optional<Stock> findById(Long id);
 }

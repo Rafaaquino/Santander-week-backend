@@ -1,17 +1,22 @@
 package com.project.bootcamp.service;
 
+import java.util.List;
 import java.util.Optional;
 
+import org.apache.catalina.mapper.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.project.bootcamp.exceptions.BusinessException;
+import com.project.bootcamp.exceptions.NotFoundException;
 import com.project.bootcamp.mapper.StockMapper;
 import com.project.bootcamp.model.Stock;
 import com.project.bootcamp.model.dto.StockDTO;
 import com.project.bootcamp.repository.StockRepository;
 import com.project.bootcamp.utils.MessageUtils;
+
+import net.bytebuddy.implementation.bytecode.Throw;
 
 @Service
 public class StockService {
@@ -36,6 +41,13 @@ public class StockService {
 	}
 	
 	@Transactional
+	public StockDTO delete(Long id) {
+		StockDTO dto = this.findById(id);
+		repository.deleteById(dto.getId());
+		return dto;
+	}
+	
+	@Transactional
 	public StockDTO update(StockDTO dto) {
 		Optional<Stock> optionalStock = repository.findByStockUpdate(dto.getName(), dto.getDate(), dto.getId());
 		
@@ -47,5 +59,16 @@ public class StockService {
 		repository.save(stock);
 		return mapper.toDto(stock);
 	}
+	
+	@Transactional(readOnly = true)
+	public List<StockDTO> findAll() {
+		return mapper.toDto(repository.findAll());		
+	}
+	
+	@Transactional(readOnly = true)
+	public StockDTO findById(Long id) {		
+		return repository.findById(id).map(mapper::toDto).orElseThrow(NotFoundException::new); 
+	}
+	
 	
 }
