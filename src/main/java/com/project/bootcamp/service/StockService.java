@@ -1,11 +1,13 @@
 package com.project.bootcamp.service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
 
 import org.apache.catalina.mapper.Mapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.project.bootcamp.exceptions.BusinessException;
@@ -16,7 +18,6 @@ import com.project.bootcamp.model.dto.StockDTO;
 import com.project.bootcamp.repository.StockRepository;
 import com.project.bootcamp.utils.MessageUtils;
 
-import net.bytebuddy.implementation.bytecode.Throw;
 
 @Service
 public class StockService {
@@ -65,10 +66,19 @@ public class StockService {
 		return mapper.toDto(repository.findAll());		
 	}
 	
-	@Transactional(readOnly = true)
+	@Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
 	public StockDTO findById(Long id) {		
-		return repository.findById(id).map(mapper::toDto).orElseThrow(NotFoundException::new); 
+		return repository.findById(id)
+				.map(mapper::toDto)
+				.orElseThrow(NotFoundException::new); 
 	}
+	
+	@Transactional(readOnly = true, propagation = Propagation.SUPPORTS)
+    public List<StockDTO> findByToday() {
+        return repository.findByToday(LocalDate.now())
+        		.map(mapper::toDto)
+        		.orElseThrow(NotFoundException::new);
+    }
 	
 	
 }

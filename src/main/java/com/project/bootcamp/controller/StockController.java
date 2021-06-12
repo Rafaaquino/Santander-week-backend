@@ -8,6 +8,7 @@ import javax.validation.Valid;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.project.bootcamp.model.dto.StockDTO;
 import com.project.bootcamp.service.StockService;
 
+@CrossOrigin
 @RestController
 @RequestMapping(value = "/stock")
 public class StockController {
@@ -52,5 +54,10 @@ public class StockController {
 	public ResponseEntity<StockDTO> delete(@PathVariable Long id) {
 		return ResponseEntity.ok(service.delete(id));
 	}
+	
+	@GetMapping(value = "/today", produces = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<List<StockDTO>> findByToday(){
+        return ResponseEntity.ok(service.findByToday());
+    }
 
 }

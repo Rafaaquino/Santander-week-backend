@@ -1,6 +1,7 @@
 package com.project.bootcamp.repository;
 
 import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -20,4 +21,9 @@ public interface StockRepository extends JpaRepository<Stock, Long> {
 	Optional<Stock> findByStockUpdate(String name, LocalDate date, Long id);
 	
 	Optional<Stock> findById(Long id);
+	
+	@Query("SELECT stock " +
+			"FROM Stock stock " +
+			"WHERE stock.date = : date ")
+	Optional<List<Stock>> findByToday(LocalDate date);
 }
